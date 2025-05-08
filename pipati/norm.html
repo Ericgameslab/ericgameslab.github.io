@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Piedra, Papel o Tijeras</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+      background-color: #f0f0f0;
+    }
+    h1 {
+      color: #333;
+    }
+    .botones button {
+      font-size: 18px;
+      margin: 10px;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 10px;
+      border: 2px solid #444;
+      background-color: white;
+    }
+    .botones button:hover {
+      background-color: #ddd;
+    }
+    #resultado {
+      margin-top: 30px;
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🪨📄✂️ Piedra, Papel o Tijeras</h1>
+  <div class="botones">
+    <button onclick="jugar('piedra')">🪨 Piedra</button>
+    <button onclick="jugar('papel')">📄 Papel</button>
+    <button onclick="jugar('tijeras')">✂️ Tijeras</button>
+  </div>
+
+  <div id="resultado"></div>
+
+  <script>
+    function jugar(eleccionUsuario) {
+      const opciones = ["piedra", "papel", "tijeras"];
+      const eleccionComputadora = opciones[Math.floor(Math.random() * 3)];
+      let resultado = "";
+
+      if (eleccionUsuario === eleccionComputadora) {
+        resultado = "¡Empate!";
+      } else if (
+        (eleccionUsuario === "piedra" && eleccionComputadora === "tijeras") ||
+        (eleccionUsuario === "papel" && eleccionComputadora === "piedra") ||
+        (eleccionUsuario === "tijeras" && eleccionComputadora === "papel")
+      ) {
+        resultado = "¡Ganaste!";
+      } else {
+        resultado = "Perdiste.";
+      }
+
+      document.getElementById("resultado").innerHTML = `
+        Tú elegiste: <strong>${eleccionUsuario}</strong><br>
+        La computadora eligió: <strong>${eleccionComputadora}</strong><br>
+        <h2>${resultado}</h2>
+      `;
+    }
+  </script>
+
+</body>
+</html>
