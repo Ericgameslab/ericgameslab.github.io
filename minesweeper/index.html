@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Buscaminas Mejorado</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 20px;
+    }
+    #board {
+      display: grid;
+      gap: 2px;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .cell {
+      width: 30px;
+      height: 30px;
+      background-color: #ccc;
+      border: 1px solid #999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .revealed {
+      background-color: #eee;
+      cursor: default;
+    }
+    .mine {
+      background-color: red;
+    }
+    .flag {
+      background-color: yellow;
+    }
+    #controls {
+      margin-top: 15px;
+    }
+    input[type="number"] {
+      width: 60px;
+      padding: 5px;
+      margin: 0 5px;
+    }
+    button {
+      padding: 5px 10px;
+      margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Buscaminas</h1>
+
+  <div id="board"></div>
+
+  <div id="controls">
+    <label>
+      Tamaño: 
+      <input type="number" id="sizeInput" min="4" max="20" value="10">
+    </label>
+    <label>
+      Minas: 
+      <input type="number" id="minesInput" min="1" value="10">
+    </label>
+    <button onclick="createBoard()">Reiniciar</button>
+  </div>
+
+  <script>
+    let rows = 10;
+    let cols = 10;
+    let mineCount = 10;
+    let revealedCount = 0;
+    let totalSafeCells = 0;
+    let gameOver = false;
+
+    const board = document.getElementById("board");
+    const sizeInput = document.getElementById("sizeInput");
+    const minesInput = document.getElementById("minesInput");
+
+    let grid = [];
+
+    function createBoard() {
+      rows = cols = parseInt(sizeInput.value);
+      mineCount = parseInt(minesInput.value);
+      gameOver = false;
+      revealedCount = 0;
+
+      if (rows < 4) rows = cols = 4;
+      if (rows > 20) rows = cols = 20;
+
+      const maxMines = rows * cols - 1;
+      if (mineCount >= maxMines) mineCount = maxMines;
+      minesInput.max = maxMines;
+      minesInput.value = mineCount;
+
+      totalSafeCells = rows * cols - mineCount;
+
+      board.innerHTML = "";
+      board.style.gridTemplateColumns = `repeat(${cols}, 30px)`;
+      grid = [];
+
+      for (let r = 0; r < rows; r++) {
+        const row = [];
+        for (let c = 0; c < cols; c++) {
+          const cell = {
+            r, c,
+            isMine: false,
+            revealed: false,
+            flagged: false,
+            element: document.createElement("div"),
+            adjacentMines: 0,
+          };
+          cell.element.classList.add("cell");
+          board.appendChild(cell.element);
+          row.push(cell);
+
+          cell.element.addEventListener("click", () => reveal(cell));
+          cell.element.addEventListener("contextmenu", (e) => {
+            e.preventDefault();
+            toggleFlag(cell);
+          });
+        }
+        grid.push(row);
+      }
+
+      placeMines();
+      calculateAdjacents();
+    }
+
+    function placeMines() {
+      let placed = 0;
+      while (placed < mineCount) {
+        const r = Math.floor(Math.random() * rows);
+        const c = Math.floor(Math.random() * cols);
+        if (!grid[r][c].isMine) {
+          grid[r][c].isMine = true;
+          placed++;
+        }
+      }
+    }
+
+    function calculateAdjacents() {
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          if (grid[r][c].isMine) continue;
+          let count = 0;
+          for (let dr = -1; dr <= 1; dr++) {
+            for (let dc = -1; dc <= 1; dc++) {
+              const nr = r + dr;
+              const nc = c + dc;
+              if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) {
+                if (grid[nr][nc].isMine) count++;
+              }
+            }
+          }
+          grid[r][c].adjacentMines = count;
+        }
+      }
+    }
+
+    function reveal(cell) {
+      if (cell.revealed || cell.flagged || gameOver) return;
+
+      cell.revealed = true;
+      revealedCount++;
+      cell.element.classList.add("revealed");
+
+      if (cell.isMine) {
+        cell.revealed = false;
+        revealedCount--;
+        revealAll(() => alert("💥 ¡Boom! Perdiste."));
+        gameOver = true;
+        return;
+      }
+
+      if (cell.adjacentMines > 0) {
+        cell.element.textContent = cell.adjacentMines;
+      } else {
+        // revelar vecinos vacíos
+        for (let dr = -1; dr <= 1; dr++) {
+          for (let dc = -1; dc <= 1; dc++) {
+            const nr = cell.r + dr;
+            const nc = cell.c + dc;
+            if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) {
+              reveal(grid[nr][nc]);
+            }
+          }
+        }
+      }
+
+      checkWin();
+    }
+
+    function toggleFlag(cell) {
+      if (cell.revealed || gameOver) return;
+      cell.flagged = !cell.flagged;
+      cell.element.classList.toggle("flag");
+      cell.element.textContent = cell.flagged ? "🚩" : "";
+    }
+
+    function revealAll(callback) {
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          const cell = grid[r][c];
+          if (!cell.revealed) {
+            cell.revealed = true;
+            cell.element.classList.add("revealed");
+            if (cell.isMine) {
+              cell.element.classList.add("mine");
+              cell.element.textContent = "💣";
+            } else if (cell.adjacentMines > 0) {
+              cell.element.textContent = cell.adjacentMines;
+            }
+          }
+        }
+      }
+      setTimeout(() => {
+        if (callback) callback();
+      }, 100);
+    }
+
+    function checkWin() {
+      if (revealedCount === totalSafeCells && !gameOver) {
+        gameOver = true;
+        setTimeout(() => alert("🎉 ¡Felicidades! Ganaste."), 100);
+      }
+    }
+
+    // Inicia el tablero al cargar
+    createBoard();
+  </script>
+</body>
+</html>
