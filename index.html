@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <meta name="title" content="Eric Games">
+        <meta name="description" content="Games, visualizations, interactives and other weird stuff.">
+        <title>Eric Games</title>
+        <link rel="canonical" href="https://ericgameslab.github.io">
+        <link rel="icon" type="image/png" href="favicon.png">
+        <style>
+            @font-face {
+                font-family: Roboto;
+                src: url(assets/fonts/Roboto-Medium.3ac5d40.woff2)
+            }
+
+            @font-face {
+                font-family: Roboto;
+                font-weight: 700;
+                src: url(assets/fonts/Roboto-Bold.a65527f.woff2)
+            }
+
+            html {
+                font-size: 16px;
+                -ms-text-size-adjust: 100%;
+                -webkit-text-size-adjust: 100%;
+                -moz-osx-font-smoothing: grayscale;
+                -webkit-font-smoothing: antialiased;
+                background: #fff;
+                box-sizing: border-box;
+                color: #000;
+                font-family: Roboto,sans-serif
+            }
+
+            *,:after,:before {
+                box-sizing: border-box;
+                margin: 0
+            }
+
+            @font-face {
+                font-family: RobotoCondensedLight;
+                src: url(assets/fonts/RobotoCondensed-Light.bc0664d.woff2)
+            }
+
+            .container {
+                color: #000;
+                font-family: RobotoCondensedLight,sans-serif;
+                margin-left: auto;
+                margin-right: auto
+            }
+
+            .posts {
+                display: grid;
+                font-size: 0;
+                grid-template-columns: repeat(3,1fr);
+                grid-template-rows: auto;
+                margin-top: 10px;
+                grid-gap: 20px 22px;
+                justify-content: center;
+                margin-left: auto;
+                margin-right: auto;
+                max-width: 1400px;
+                padding: 0 25px;
+                width: 100%
+            }
+
+            .made-by {
+                background: #fff;
+                font-size: 21px;
+                margin-bottom: 40px;
+                margin-top: 10px;
+                padding: 25px 20px 20px;
+                text-align: center
+            }
+
+            .site-title {
+                animation: pulse 1s infinite alternate-reverse;
+                display: block;
+                font-weight: 700;
+                margin-left: auto;
+                margin-right: auto;
+                margin-top: 58px;
+                max-width: 210px;
+                min-height: 55px;
+                text-align: center;
+                width: 100%
+            }
+
+            .site-tagline {
+                font-size: 21px;
+                margin-bottom: 47px;
+                margin-top: 10px;
+                opacity: .7;
+                text-align: center
+            }
+
+            .socials {
+                display: flex;
+                justify-content: center;
+                grid-gap: 12px;
+                margin-top: 12px
+            }
+
+            .social-btn {
+                align-items: center;
+                border: 1px solid #000;
+                border-radius: 12px;
+                color: #000;
+                cursor: pointer;
+                display: flex;
+                padding: 10px 18px 8px 12px;
+                -webkit-text-decoration: none;
+                text-decoration: none
+            }
+
+            .social-btn:hover {
+                transform: scale(1.04)
+            }
+
+            .social-btn-icon {
+                height: 26px;
+                margin-right: 10px
+            }
+
+            .social-btn-twitter {
+                padding: 1px 0
+            }
+
+            .contact {
+                margin-top: 12px
+            }
+
+            .contact a,.privacy {
+                color: #000;
+                -webkit-text-decoration: none;
+                text-decoration: none
+            }
+
+            .privacy {
+                display: block;
+                font-size: 16px;
+                margin-top: 12px;
+                opacity: .5
+            }
+
+            @media only screen and (max-width: 1280px) {
+                .posts {
+                    grid-gap:15px 16px
+                }
+            }
+
+            @media only screen and (max-width: 1130px) {
+                .posts {
+                    grid-template-columns:1fr 1fr;
+                    max-width: 900px;
+                    grid-gap: 15px 18px
+                }
+            }
+
+            @media only screen and (max-width: 700px) {
+                
+            }
+
+            @media only screen and (max-width: 600px) {
+                .posts {
+                    grid-template-columns:repeat(1,1fr);
+                    grid-gap: 7px;
+                    padding: 0 8px
+                }
+
+                .site-title {
+                    font-size: 48px;
+                    margin-top: 55px
+                }
+
+                .site-tagline {
+                    margin-top: 10px
+                }
+
+                .made-by,.site-tagline {
+                    margin-bottom: 30px
+                }
+
+                .made-by-desc {
+                    margin-left: auto;
+                    margin-right: auto;
+                    max-width: 300px
+                }
+
+                .socials {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr
+                }
+
+                .social-btn {
+                    justify-content: center;
+                    padding: 10px 0
+                }
+
+                .social-full {
+                    grid-column: span 2
+                }
+            }
+
+            .link {
+                aspect-ratio: 391/145;
+                border-radius: 19px;
+                display: block;
+                min-width: 100%;
+                width: 100%;
+                z-index: 2
+            }
+
+            .link-img {
+                cursor: pointer;
+                max-width: 100%;
+                opacity: 0;
+                transition: transform .07s linear,filter .1s ease-out,opacity .15s linear
+            }
+
+            .link-img:hover {
+                filter: drop-shadow(3px 3px 5px rgba(0,0,0,.17));
+                transform: scale(1.02)
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <img alt="Eric Games logo" src="assets/logo/logo.svg" class="site-title">
+            <div class="site-tagline" >Games and other things</div>
+            <!---->
+            <div class="posts" >
+                <a href="/rock-paper-sci/" class="link" style="background:#f1f2f6">
+                    <img onload="" alt="Rock Paper Scissors" src="games-images/rock-paper-sci.svg" loading="lazy" class="link-img" style="opacity:0">
+                </a>
+                <a href="/minesweeper/" class="link" style="background:#f1f2f6">
+                    <img onload="" alt="Minesweeper" src="games-images/minesweeper.svg" loading="lazy" class="link-img" style="opacity:0">
+                </a>
+                <a href="/game3/" class="link" style="background:#f1f2f6">
+                    <img onload="" alt="game3" src="games-images/game3.svg" loading="lazy" class="link-img" style="opacity:0">
+                </a>
+                <a href="/game4/" class="link" style="background:#f1f2f6">
+                    <img onload="" alt="game4" src="games-images/game4.svg" loading="lazy" class="link-img" style="opacity:0">
+                </a>
+            </div>
+            <!---->
+            <div class="made-by">
+                <div class="made-by-desc">Hi! I'm Eric. This is where I make stuff on the web. Obligatory links:</div>
+                <div class="socials">
+                    <a href="https://twitter.com/AAAA" target="_blank" class="social-btn social-full">
+                        <img alt="Twitter" src="assets/general/twitter.svg" class="social-btn-icon social-btn-twitter">Twitter
+                    </a>
+                    <a target="_blank" href="https://instagram.com/AAAA" class="social-btn social-full">
+                        <img alt="Instagram" src="assets/general/instagram.svg" class="social-btn-icon" >Instagram
+                    </a>
+                    <a target="_blank" href="https://buymeacoffee.com/Eric123" class="social-btn social-full">
+                        <img alt="Coffee" src="assets/general/coffee.svg" class="social-btn-icon" >Buy me a coffee(Soon)
+                    </a>
+                </div>
+                <div class="contact"></div>
+                <a href="/privacy-policy/" class="privacy" >Privacy policy(Coming)</a>
+            </div>
+        </div>
+    </body>
+</html>
