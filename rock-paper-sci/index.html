@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rock, Paper or Scissors</title>
+  <title>Rock Paper Scissors</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -14,7 +14,7 @@
     h1 {
       color: #333;
     }
-    .botones button, #reset {
+    .buttons button, #reset {
       font-size: 18px;
       margin: 10px;
       padding: 10px 20px;
@@ -23,7 +23,7 @@
       border: 2px solid #444;
       background-color: white;
     }
-    .botones button:hover, #reset:hover {
+    .buttons button:hover, #reset:hover {
       background-color: #ddd;
     }
     #result {
@@ -38,12 +38,12 @@
 </head>
 <body>
 
-  <h1>⛰📄✂️ Rock, Paper o Scissors</h1>
+  <h1>⛰📄✂️ Rock Paper Scissors</h1>
 
-  <div class="botones">
-    <button onclick="jugar('rock')">⛰ Rock</button>
-    <button onclick="jugar('paper')">📄 Paper</button>
-    <button onclick="jugar('scissors')">✂️ Scissors</button>
+  <div class="buttons">
+    <button onclick="play('rock')">⛰ Rock</button>
+    <button onclick="play('paper')">📄 Paper</button>
+    <button onclick="play('scissors')">✂️ Scissors</button>
   </div>
 
   <div id="result"></div>
@@ -55,7 +55,7 @@
     <p>🔢 Games played: <span id="gamesCounter">0</span></p>
   </div>
 
-  <button id="reset" onclick="reiniciarJuego()">🔁 Reset</button>
+  <button id="reset" onclick="resetGame()">🔁 Reset</button>
 
   <script>
     // Cargar puntajes desde localStorage o establecer valores iniciales
@@ -64,18 +64,18 @@
     let draws = parseInt(localStorage.getItem("draws")) || 0;
     let games = parseInt(localStorage.getItem("games")) || 0;
 
-    function jugar(eleccionUsuario) {
-      const opciones = ["rock", "paper", "scissors"];
-      const eleccionComputadora = opciones[Math.floor(Math.random() * 3)];
+    function play(choiceUser) {
+      const options = ["rock", "paper", "scissors"];
+      const choiceComputer = options[Math.floor(Math.random() * 3)];
       let result = "";
 
-      if (eleccionUsuario === eleccionComputadora) {
+      if (choiceUser === choiceComputer) {
         result = "¡Draw!";
         draws++;
       } else if (
-        (eleccionUsuario === "rock" && eleccionComputadora === "scissors") ||
-        (eleccionUsuario === "paper" && eleccionComputadora === "rock") ||
-        (eleccionUsuario === "scissors" && eleccionComputadora === "paper")
+        (choiceUser === "rock" && choiceComputer === "scissors") ||
+        (choiceUser === "paper" && choiceComputer === "rock") ||
+        (choiceUser === "scissors" && choiceComputer === "paper")
       ) {
         result = "¡You win!";
         scoreUser++;
@@ -86,12 +86,12 @@
 
       games++;
 
-      // Guardar en localStorage
-      guardarPuntajes();
+      // Save in localStorage
+      saveScores();
 
       document.getElementById("result").innerHTML = `
-        You chose: <strong>${eleccionUsuario}</strong><br>
-        The computer chose: <strong>${eleccionComputadora}</strong><br>
+        You chose: <strong>${choiceUser}</strong><br>
+        The computer chose: <strong>${choiceComputer}</strong><br>
         <h2>${result}</h2>
       `;
 
@@ -105,14 +105,14 @@
       document.getElementById("gamesCounter").textContent = games;
     }
 
-    function guardarPuntajes() {
+    function saveScores() {
       localStorage.setItem("scoreUser", scoreUser);
       localStorage.setItem("scoreComputer", scoreComputer);
       localStorage.setItem("draws", draws);
       localStorage.setItem("games", games);
     }
 
-    function reiniciarJuego() {
+    function resetGame() {
       if (confirm("Are you sure you want to reset the scores?")) {
         scoreUser = 0;
         scoreComputer = 0;
@@ -127,6 +127,5 @@
     // Start scores on screen when loading
     updateScores();
   </script>
-
 </body>
 </html>
