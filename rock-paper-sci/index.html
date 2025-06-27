@@ -1,20 +1,20 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Piedra, Papel o Tijeras</title>
+  <title>Rock, Paper or Scissors</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       text-align: center;
       padding: 50px;
-      background-color: #f0f0f0;
+      background-color: #f5f5f5;
     }
     h1 {
       color: #333;
     }
-    .botones button, #reiniciar {
+    .botones button, #reset {
       font-size: 18px;
       margin: 10px;
       padding: 10px 20px;
@@ -23,14 +23,14 @@
       border: 2px solid #444;
       background-color: white;
     }
-    .botones button:hover, #reiniciar:hover {
+    .botones button:hover, #reset:hover {
       background-color: #ddd;
     }
-    #resultado {
+    #result {
       margin-top: 30px;
       font-size: 20px;
     }
-    #puntajes {
+    #scores {
       margin-top: 20px;
       font-size: 18px;
     }
@@ -38,94 +38,94 @@
 </head>
 <body>
 
-  <h1>⛰📄✂️ Piedra, Papel o Tijeras</h1>
+  <h1>⛰📄✂️ Rock, Paper o Scissors</h1>
 
   <div class="botones">
-    <button onclick="jugar('piedra')">⛰ Piedra</button>
-    <button onclick="jugar('papel')">📄 Papel</button>
-    <button onclick="jugar('tijeras')">✂️ Tijeras</button>
+    <button onclick="jugar('rock')">⛰ Rock</button>
+    <button onclick="jugar('paper')">📄 Paper</button>
+    <button onclick="jugar('scissors')">✂️ Scissors</button>
   </div>
 
-  <div id="resultado"></div>
+  <div id="result"></div>
 
-  <div id="puntajes">
-    <p>👤 Tú: <span id="puntosUsuario">0</span></p>
-    <p>🤖 Computadora: <span id="puntosComputadora">0</span></p>
-    <p>🤝 Empates: <span id="empates">0</span></p>
-    <p>🔢 Partidas jugadas: <span id="contadorPartidas">0</span></p>
+  <div id="scores">
+    <p>👤 You: <span id="scoreUser">0</span></p>
+    <p>🤖 Computer: <span id="scoreComputer">0</span></p>
+    <p>🤝 Draws: <span id="draws">0</span></p>
+    <p>🔢 Games played: <span id="gamesCounter">0</span></p>
   </div>
 
-  <button id="reiniciar" onclick="reiniciarJuego()">🔁 Reiniciar</button>
+  <button id="reset" onclick="reiniciarJuego()">🔁 Reset</button>
 
   <script>
     // Cargar puntajes desde localStorage o establecer valores iniciales
-    let puntosUsuario = parseInt(localStorage.getItem("puntosUsuario")) || 0;
-    let puntosComputadora = parseInt(localStorage.getItem("puntosComputadora")) || 0;
-    let empates = parseInt(localStorage.getItem("empates")) || 0;
-    let partidas = parseInt(localStorage.getItem("partidas")) || 0;
+    let scoreUser = parseInt(localStorage.getItem("scoreUser")) || 0;
+    let scoreComputer = parseInt(localStorage.getItem("scoreComputer")) || 0;
+    let draws = parseInt(localStorage.getItem("draws")) || 0;
+    let games = parseInt(localStorage.getItem("games")) || 0;
 
     function jugar(eleccionUsuario) {
-      const opciones = ["piedra", "papel", "tijeras"];
+      const opciones = ["rock", "paper", "scissors"];
       const eleccionComputadora = opciones[Math.floor(Math.random() * 3)];
-      let resultado = "";
+      let result = "";
 
       if (eleccionUsuario === eleccionComputadora) {
-        resultado = "¡Empate!";
-        empates++;
+        result = "¡Draw!";
+        draws++;
       } else if (
-        (eleccionUsuario === "piedra" && eleccionComputadora === "tijeras") ||
-        (eleccionUsuario === "papel" && eleccionComputadora === "piedra") ||
-        (eleccionUsuario === "tijeras" && eleccionComputadora === "papel")
+        (eleccionUsuario === "rock" && eleccionComputadora === "scissors") ||
+        (eleccionUsuario === "paper" && eleccionComputadora === "rock") ||
+        (eleccionUsuario === "scissors" && eleccionComputadora === "paper")
       ) {
-        resultado = "¡Ganaste!";
-        puntosUsuario++;
+        result = "¡You win!";
+        scoreUser++;
       } else {
-        resultado = "Perdiste.";
-        puntosComputadora++;
+        result = "You lost.";
+        scoreComputer++;
       }
 
-      partidas++;
+      games++;
 
       // Guardar en localStorage
       guardarPuntajes();
 
-      document.getElementById("resultado").innerHTML = `
-        Tú elegiste: <strong>${eleccionUsuario}</strong><br>
-        La computadora eligió: <strong>${eleccionComputadora}</strong><br>
-        <h2>${resultado}</h2>
+      document.getElementById("result").innerHTML = `
+        You chose: <strong>${eleccionUsuario}</strong><br>
+        The computer chose: <strong>${eleccionComputadora}</strong><br>
+        <h2>${result}</h2>
       `;
 
-      actualizarPuntajes();
+      updateScores();
     }
 
-    function actualizarPuntajes() {
-      document.getElementById("puntosUsuario").textContent = puntosUsuario;
-      document.getElementById("puntosComputadora").textContent = puntosComputadora;
-      document.getElementById("empates").textContent = empates;
-      document.getElementById("contadorPartidas").textContent = partidas;
+    function updateScores() {
+      document.getElementById("scoreUser").textContent = scoreUser;
+      document.getElementById("scoreComputer").textContent = scoreComputer;
+      document.getElementById("draws").textContent = draws;
+      document.getElementById("gamesCounter").textContent = games;
     }
 
     function guardarPuntajes() {
-      localStorage.setItem("puntosUsuario", puntosUsuario);
-      localStorage.setItem("puntosComputadora", puntosComputadora);
-      localStorage.setItem("empates", empates);
-      localStorage.setItem("partidas", partidas);
+      localStorage.setItem("scoreUser", scoreUser);
+      localStorage.setItem("scoreComputer", scoreComputer);
+      localStorage.setItem("draws", draws);
+      localStorage.setItem("games", games);
     }
 
     function reiniciarJuego() {
-      if (confirm("¿Estás seguro de que quieres reiniciar los puntajes?")) {
-        puntosUsuario = 0;
-        puntosComputadora = 0;
-        empates = 0;
-        partidas = 0;
+      if (confirm("Are you sure you want to reset the scores?")) {
+        scoreUser = 0;
+        scoreComputer = 0;
+        draws = 0;
+        games = 0;
         localStorage.clear();
-        document.getElementById("resultado").innerHTML = "";
-        actualizarPuntajes();
+        document.getElementById("result").innerHTML = "";
+        updateScores();
       }
     }
 
-    // Inicializar puntajes en pantalla al cargar
-    actualizarPuntajes();
+    // Start scores on screen when loading
+    updateScores();
   </script>
 
 </body>
