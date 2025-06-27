@@ -1,131 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rock Paper Scissors</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 50px;
-      background-color: #f5f5f5;
-    }
-    h1 {
-      color: #333;
-    }
-    .buttons button, #reset {
-      font-size: 18px;
-      margin: 10px;
-      padding: 10px 20px;
-      cursor: pointer;
-      border-radius: 10px;
-      border: 2px solid #444;
-      background-color: white;
-    }
-    .buttons button:hover, #reset:hover {
-      background-color: #ddd;
-    }
-    #result {
-      margin-top: 30px;
-      font-size: 20px;
-    }
-    #scores {
-      margin-top: 20px;
-      font-size: 18px;
-    }
-  </style>
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Rock Paper Scissors</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                text-align: center;
+                padding: 50px;
+                background-color: #f5f5f5;
+            }
 
-  <h1>⛰📄✂️ Rock Paper Scissors</h1>
+            h1 {
+                color: #333;
+            }
 
-  <div class="buttons">
-    <button onclick="play('rock')">⛰ Rock</button>
-    <button onclick="play('paper')">📄 Paper</button>
-    <button onclick="play('scissors')">✂️ Scissors</button>
-  </div>
+            .buttons button, #reset {
+                font-size: 18px;
+                margin: 10px;
+                padding: 10px 20px;
+                cursor: pointer;
+                border-radius: 10px;
+                border: 2px solid #444;
+                background-color: white;
+            }
 
-  <div id="result"></div>
+            .buttons button:hover, #reset:hover {
+                background-color: #ddd;
+            }
 
-  <div id="scores">
-    <p>👤 You: <span id="scoreUser">0</span></p>
-    <p>🤖 Computer: <span id="scoreComputer">0</span></p>
-    <p>🤝 Draws: <span id="draws">0</span></p>
-    <p>🔢 Games played: <span id="gamesCounter">0</span></p>
-  </div>
+            #result {
+                margin-top: 30px;
+                font-size: 20px;
+            }
+            
+            #scores {
+                margin-top: 20px;
+                font-size: 18px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>⛰📄✂️ Rock Paper Scissors</h1>
 
-  <button id="reset" onclick="resetGame()">🔁 Reset</button>
+        <div class="buttons">
+            <button onclick="play('rock')">⛰ Rock</button>
+            <button onclick="play('paper')">📄 Paper</button>
+            <button onclick="play('scissors')">✂️ Scissors</button>
+        </div>
 
-  <script>
-    // Cargar puntajes desde localStorage o establecer valores iniciales
-    let scoreUser = parseInt(localStorage.getItem("scoreUser")) || 0;
-    let scoreComputer = parseInt(localStorage.getItem("scoreComputer")) || 0;
-    let draws = parseInt(localStorage.getItem("draws")) || 0;
-    let games = parseInt(localStorage.getItem("games")) || 0;
+        <div id="result"></div>
 
-    function play(choiceUser) {
-      const options = ["rock", "paper", "scissors"];
-      const choiceComputer = options[Math.floor(Math.random() * 3)];
-      let result = "";
+        <div id="scores">
+            <p>👤 You: <span id="scoreUser">0</span></p>
+            <p>🤖 Computer: <span id="scoreComputer">0</span></p>
+            <p>🤝 Draws: <span id="draws">0</span></p>
+            <p>🔢 Games played: <span id="gamesCounter">0</span></p>
+        </div>
 
-      if (choiceUser === choiceComputer) {
-        result = "¡Draw!";
-        draws++;
-      } else if (
-        (choiceUser === "rock" && choiceComputer === "scissors") ||
-        (choiceUser === "paper" && choiceComputer === "rock") ||
-        (choiceUser === "scissors" && choiceComputer === "paper")
-      ) {
-        result = "¡You win!";
-        scoreUser++;
-      } else {
-        result = "You lost.";
-        scoreComputer++;
-      }
+        <button id="reset" onclick="resetGame()">🔁 Reset</button>
 
-      games++;
+        <script>
+            // Load scores from localStorage or establish initial values
+            let scoreUser = parseInt(localStorage.getItem("scoreUser")) || 0;
+            let scoreComputer = parseInt(localStorage.getItem("scoreComputer")) || 0;
+            let draws = parseInt(localStorage.getItem("draws")) || 0;
+            let games = parseInt(localStorage.getItem("games")) || 0;
 
-      // Save in localStorage
-      saveScores();
+            function play(choiceUser) {
+                const options = ["rock", "paper", "scissors"];
+                const choiceComputer = options[Math.floor(Math.random() * 3)];
+                let result = "";
 
-      document.getElementById("result").innerHTML = `
-        You chose: <strong>${choiceUser}</strong><br>
-        The computer chose: <strong>${choiceComputer}</strong><br>
-        <h2>${result}</h2>
-      `;
+                if (choiceUser === choiceComputer) {
+                    result = "¡Draw!";
+                    draws++;
+                } else if (
+                    (choiceUser === "rock" && choiceComputer === "scissors") ||
+                    (choiceUser === "paper" && choiceComputer === "rock") ||
+                    (choiceUser === "scissors" && choiceComputer === "paper")
+                ) {
+                    result = "¡You win!";
+                    scoreUser++;
+                } else {
+                    result = "You lost.";
+                    scoreComputer++;
+                }
 
-      updateScores();
-    }
+                games++;
 
-    function updateScores() {
-      document.getElementById("scoreUser").textContent = scoreUser;
-      document.getElementById("scoreComputer").textContent = scoreComputer;
-      document.getElementById("draws").textContent = draws;
-      document.getElementById("gamesCounter").textContent = games;
-    }
+                // Save in localStorage
+                saveScores();
 
-    function saveScores() {
-      localStorage.setItem("scoreUser", scoreUser);
-      localStorage.setItem("scoreComputer", scoreComputer);
-      localStorage.setItem("draws", draws);
-      localStorage.setItem("games", games);
-    }
+                document.getElementById("result").innerHTML = `
+                    You chose: <strong>${choiceUser}</strong><br>
+                    The computer chose: <strong>${choiceComputer}</strong><br>
+                    <h2>${result}</h2>
+                `;
 
-    function resetGame() {
-      if (confirm("Are you sure you want to reset the scores?")) {
-        scoreUser = 0;
-        scoreComputer = 0;
-        draws = 0;
-        games = 0;
-        localStorage.clear();
-        document.getElementById("result").innerHTML = "";
-        updateScores();
-      }
-    }
+                updateScores();
+            }
 
-    // Start scores on screen when loading
-    updateScores();
-  </script>
-</body>
+            function updateScores() {
+                document.getElementById("scoreUser").textContent = scoreUser;
+                document.getElementById("scoreComputer").textContent = scoreComputer;
+                document.getElementById("draws").textContent = draws;
+                document.getElementById("gamesCounter").textContent = games;
+            }
+
+            function saveScores() {
+                localStorage.setItem("scoreUser", scoreUser);
+                localStorage.setItem("scoreComputer", scoreComputer);
+                localStorage.setItem("draws", draws);
+                localStorage.setItem("games", games);
+            }
+
+            function resetGame() {
+                if (confirm("Are you sure you want to reset the scores?")) {
+                    scoreUser = 0;
+                    scoreComputer = 0;
+                    draws = 0;
+                    games = 0;
+                    localStorage.clear();
+                    document.getElementById("result").innerHTML = "";
+                    updateScores();
+                }
+            }
+
+            // Start scores on screen when loading
+            updateScores();
+        </script>
+    </body>
 </html>
