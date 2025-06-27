@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Piedra, Papel o Tijera</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                text-align: center;
+                padding: 50px;
+                background-color: #f5f5f5;
+            }
+
+            h1 {
+                color: #333;
+            }
+
+            .buttons button, #reset {
+                font-size: 18px;
+                margin: 10px;
+                padding: 10px 20px;
+                cursor: pointer;
+                border-radius: 10px;
+                border: 2px solid #444;
+                background-color: white;
+            }
+
+            .buttons button:hover, #reset:hover {
+                background-color: #ddd;
+            }
+
+            #result {
+                margin-top: 30px;
+                font-size: 20px;
+            }
+
+            #scores {
+                margin-top: 20px;
+                font-size: 18px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>⛰📄✂️ Piedra, Papel o Tijera</h1>
+
+        <div class="buttons">
+            <button onclick="play('piedra')">⛰ Piedra</button>
+            <button onclick="play('papel')">📄 Papel</button>
+            <button onclick="play('tijera')">✂️ Tijera</button>
+        </div>
+
+        <div id="result"></div>
+
+        <div id="scores">
+            <p>👤 Tú: <span id="scoreUser">0</span></p>
+            <p>🤖 Computadora: <span id="scoreComputer">0</span></p>
+            <p>🤝 Empates: <span id="draws">0</span></p>
+            <p>🔢 Partidas jugadas: <span id="gamesCounter">0</span></p>
+        </div>
+
+        <button id="reset" onclick="resetGame()">🔁 Reiniciar</button>
+
+        <script>
+            // Load scores from localStorage or establish initial values
+            let scoreUser = parseInt(localStorage.getItem("scoreUser")) || 0;
+            let scoreComputer = parseInt(localStorage.getItem("scoreComputer")) || 0;
+            let draws = parseInt(localStorage.getItem("draws")) || 0;
+            let games = parseInt(localStorage.getItem("games")) || 0;
+
+            function play(choiceUser) {
+                const options = ["piedra", "papel", "tijera"];
+                const choiceComputer = options[Math.floor(Math.random() * 3)];
+                let result = "";
+
+                if (choiceUser === choiceComputer) {
+                    result = "¡Empate!";
+                    draws++;
+                } else if (
+                    (choiceUser === "piedra" && choiceComputer === "tijera") ||
+                    (choiceUser === "papel" && choiceComputer === "piedra") ||
+                    (choiceUser === "tijera" && choiceComputer === "papel")
+                ) {
+                    result = "¡Ganaste!";
+                    scoreUser++;
+                } else {
+                    result = "Perdiste.";
+                    scoreComputer++;
+                }
+
+                games++;
+
+                // Save in localStorage
+                saveScores();
+
+                document.getElementById("result").innerHTML = `
+                    Tú elegiste: <strong>${choiceUser}</strong><br>
+                    La computadora eligió: <strong>${choiceComputer}</strong><br>
+                    <h2>${result}</h2>
+                `;
+
+                updateScores();
+            }
+
+            function updateScores() {
+                document.getElementById("scoreUser").textContent = scoreUser;
+                document.getElementById("scoreComputer").textContent = scoreComputer;
+                document.getElementById("draws").textContent = draws;
+                document.getElementById("gamesCounter").textContent = games;
+            }
+
+            function saveScores() {
+                localStorage.setItem("scoreUser", scoreUser);
+                localStorage.setItem("scoreComputer", scoreComputer);
+                localStorage.setItem("draws", draws);
+                localStorage.setItem("games", games);
+            }
+
+            function resetGame() {
+                if (confirm("¿Estás seguro de que quieres reiniciar los puntajes?")) {
+                    scoreUser = 0;
+                    scoreComputer = 0;
+                    draws = 0;
+                    games = 0;
+                    localStorage.clear();
+                    document.getElementById("result").innerHTML = "";
+                    updateScores();
+                }
+            }
+
+            // Start scores on screen when loading
+            updateScores();
+        </script>
+    </body>
+</html>
