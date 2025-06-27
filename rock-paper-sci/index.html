@@ -74,14 +74,14 @@
                 let result = "";
 
                 if (choiceUser === choiceComputer) {
-                    result = "¡Draw!";
+                    result = "Draw!";
                     draws++;
                 } else if (
                     (choiceUser === "rock" && choiceComputer === "scissors") ||
                     (choiceUser === "paper" && choiceComputer === "rock") ||
                     (choiceUser === "scissors" && choiceComputer === "paper")
                 ) {
-                    result = "¡You win!";
+                    result = "You win!";
                     scoreUser++;
                 } else {
                     result = "You lost.";
